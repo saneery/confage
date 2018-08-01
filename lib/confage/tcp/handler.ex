@@ -43,7 +43,6 @@ defmodule Confage.TCP.Handler do
           {:error, reason} -> %{error: reason}
           data -> data
         end
-        |> Poison.encode!
       _ ->
         "wrong command"
     end

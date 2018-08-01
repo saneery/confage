@@ -16,7 +16,7 @@ defmodule Confage.ServerTest do
 
   test "get config", %{socket: socket} do
     Confage.Storage.create_app("name")
-    Confage.Storage.set_configs("name", %{"key" => "val"})
+    Confage.Storage.set_configs("name", Poison.encode!(%{"key" => "val"}))
     assert :ok = :gen_tcp.send(socket, "get_config:name")
     assert {:ok, data} = :gen_tcp.recv(socket, 0)
     assert {:ok, %{"key" => "val"}} = Poison.decode(data)

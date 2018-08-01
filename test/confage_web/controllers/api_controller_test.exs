@@ -1,5 +1,6 @@
 defmodule Confage.ApiControllerTest do
   use ConfageWeb.ConnCase
+  require Poison
 
   setup_all do
     conn = Phoenix.ConnTest.build_conn()
@@ -18,9 +19,9 @@ defmodule Confage.ApiControllerTest do
   end
 
   test "create config", %{conn: conn} do
-    conn = post(conn, "/api/apps/test_app/config", %{data: %{port: 3456, host: "localhost"}})
+    conn = post(conn, "/api/apps/test_app/config", %{data: Poison.encode!(%{port: 3456, host: "localhost"})})
     assert json_response(conn, 200) == %{"status" => "ok"}
     conn = get(conn, "/api/apps/test_app/config")
-    assert json_response(conn, 200) == %{"status" => "ok", "data" => %{"port" => 3456, "host" => "localhost"}}
+    assert json_response(conn, 200) == %{"status" => "ok", "data" => Poison.encode!(%{"port" => 3456, "host" => "localhost"})}
   end
 end
