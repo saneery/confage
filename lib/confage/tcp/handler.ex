@@ -41,7 +41,7 @@ defmodule Confage.TCP.Handler do
         |> Confage.Storage.app_configs()
         |> case do
           {:error, reason} -> %{error: reason}
-          data -> data
+          {:ok, data} -> data
         end
       _ ->
         "wrong command"

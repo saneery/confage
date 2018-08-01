@@ -12,7 +12,7 @@ defmodule Confage.StorageTest do
   test "set del configs" do
     assert :ok == Storage.create_app("name")
     assert :ok == Storage.set_configs("name", "{\"d\": 4}")
-    assert %{"d" => 4} == Storage.app_configs("name") |> Poison.decode!
+    assert {:ok, "{\"d\": 4}"} == Storage.app_configs("name")
     Storage.set_configs("name", "sdf")
     Storage.del_app("name")
   end

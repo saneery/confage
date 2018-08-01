@@ -11,7 +11,7 @@ defmodule ConfageWeb.ApiController do
     case Storage.app_configs(name) do
       {:error, reason} ->
         json(conn, %{status: :error, reason: reason})
-      data -> json(conn, %{status: :ok, data: data})
+      {:ok, data} -> json(conn, %{status: :ok, data: data})
     end
   end
 
