@@ -23,7 +23,7 @@ defmodule Confage.TCP.Handler do
     receive do
       {^ok, socket, message} ->
         answer = handle(message, socket, transport)
-        transport.send(socket, answer)
+        if answer, do: transport.send(socket, answer)
         loop(socket, transport)
       {^closed, socket} ->
         Logger.info("socket closed: #{inspect(socket)}")
@@ -32,6 +32,7 @@ defmodule Confage.TCP.Handler do
       message ->
         Logger.debug("message on receive block: #{inspect(message)}")
     end
+    Confage.TCP.Subscribe.unsubscribe(socket)
   end
 
   defp handle(message, socket, transport) do
@@ -48,7 +49,7 @@ defmodule Confage.TCP.Handler do
         end
       ["subscribe", app] ->
         Confage.TCP.Subscribe.subscribe(app, socket, transport)
-        "ok"
+        false
       _ ->
         "wrong command"
     end

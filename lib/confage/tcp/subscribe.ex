@@ -18,6 +18,10 @@ defmodule Confage.TCP.Subscribe do
     GenServer.cast(__MODULE__, {:send_subs, app})
   end
 
+  def unsubscribe(socket) do
+    GenServer.cast(__MODULE__, {:unsubscribe, socket})
+  end
+
   def handle_cast({:subscribe, app, socket, transport}, ets_pid) do
     :ets.insert(ets_pid, {app, transport, socket})
     {:noreply, ets_pid}
@@ -34,5 +38,9 @@ defmodule Confage.TCP.Subscribe do
         {:error, :no_subs}
     end
     {:noreply, ets_pid}
+  end
+
+  def handle_cast({:unsubscribe, socket}, ets_pid) do
+    :ets.match_delete(ets_pid, {:"_", :"_", socket})
   end
 end
