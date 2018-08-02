@@ -22,7 +22,7 @@ defmodule Confage.TCP.Handler do
     {ok, closed, error} = transport.messages()
     receive do
       {^ok, socket, message} ->
-        answer = get_answer(message)
+        answer = handle(message, socket, transport)
         transport.send(socket, answer)
         loop(socket, transport)
       {^closed, socket} ->
@@ -34,15 +34,21 @@ defmodule Confage.TCP.Handler do
     end
   end
 
-  defp get_answer(message) do
-    case String.split(message, ":") do
+  defp handle(message, socket, transport) do
+    message
+    |> String.trim()
+    |> String.split(":")
+    |> case do
       ["get_config", app] ->
         app
         |> Confage.Storage.app_configs()
         |> case do
-          {:error, reason} -> %{error: reason}
+          {:error, :enoent} -> "not_found"
           {:ok, data} -> data
         end
+      ["subscribe", app] ->
+        Confage.TCP.Subscribe.subscribe(app, socket, transport)
+        "ok"
       _ ->
         "wrong command"
     end

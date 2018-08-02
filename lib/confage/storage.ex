@@ -33,17 +33,23 @@ defmodule Confage.Storage do
     end
     @dir
     |> Path.join("#{name}.json")
-    |> File.touch()
+    |> File.write("{}")
   end
 
   @doc "Validate and set content to the file"
-  @spec set_configs(name :: String.t(), data :: String.t()) :: :ok | {:error, :invalid}
+  @spec set_configs(name :: String.t(), data :: String.t()) :: :ok | {:error, any()}
   def set_configs(name, data) do
     case Poison.encode(data) do
       {:ok, _encoded_data} ->
         @dir
         |> Path.join("#{name}.json")
         |> File.write(data)
+        |> case do
+          :ok ->
+            Confage.TCP.Subscribe.send_subs(name)
+            :ok
+          {:error, _} = e -> e
+        end
       {:error, _} ->
         {:error, :invalid}
     end

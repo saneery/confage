@@ -16,8 +16,7 @@ defmodule ConfageWeb.ApiController do
   end
 
   def create_app(conn, %{"name" => name}) do
-    atom_name = String.to_atom(name)
-    case Storage.create_app(atom_name) do
+    case Storage.create_app(name) do
       :ok ->
         json(conn, %{status: :ok})
       {:error, reason} ->
@@ -26,8 +25,7 @@ defmodule ConfageWeb.ApiController do
   end
 
   def delete_app(conn, %{"name" => name}) do
-    atom_name = String.to_atom(name)
-    case Storage.del_app(atom_name) do
+    case Storage.del_app(name) do
       :ok -> json(conn, %{status: :ok})
       {:error, reason} ->
         json(conn, %{status: :error, reason: reason})
@@ -35,8 +33,7 @@ defmodule ConfageWeb.ApiController do
   end
 
   def set_config(conn, %{"name" => name, "data" => data}) do
-    atom_name = String.to_atom(name)
-    case Storage.set_configs(atom_name, data) do
+    case Storage.set_configs(name, data) do
       {:error, reason} -> json(conn, %{status: :error, reason: reason})
       _ -> json(conn, %{status: :ok})
     end

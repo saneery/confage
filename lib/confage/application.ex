@@ -13,6 +13,7 @@ defmodule Confage.Application do
       # Start your own worker by calling: Confage.Worker.start_link(arg1, arg2, arg3)
       # worker(Confage.Worker, [arg1, arg2, arg3]),
       worker(Confage.TCP.Server, []),
+      worker(Confage.TCP.Subscribe, []),
     ]
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

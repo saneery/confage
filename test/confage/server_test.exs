@@ -22,4 +22,14 @@ defmodule Confage.ServerTest do
     assert {:ok, %{"key" => "val"}} = Poison.decode(data)
     Confage.Storage.del_app("name")
   end
+
+  test "subscribe", %{socket: socket} do
+    Confage.Storage.create_app("sub_app")
+    Confage.Storage.set_configs("sub_app", Poison.encode!(%{key: "val"}))
+    assert :ok = :gen_tcp.send(socket, "subscribe:sub_app")
+    assert {:ok, "ok"} = :gen_tcp.recv(socket, 0)
+    Confage.Storage.set_configs("sub_app", Poison.encode!(%{key1: "val1"}))
+    assert {:ok, _data} = :gen_tcp.recv(socket, 0)
+    Confage.Storage.del_app("sub_app")
+  end
 end
