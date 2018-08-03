@@ -42,5 +42,6 @@ defmodule Confage.TCP.Subscribe do
 
   def handle_cast({:unsubscribe, socket}, ets_pid) do
     :ets.match_delete(ets_pid, {:"_", :"_", socket})
+    {:noreply, ets_pid}
   end
 end
