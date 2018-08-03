@@ -37,6 +37,7 @@ defmodule Confage.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:phoenix_html, "~> 2.11"},
+      {:basic_auth, "~> 2.2.2"},
     ]
   end
 end

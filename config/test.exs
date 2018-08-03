@@ -10,3 +10,8 @@ config :confage, ConfageWeb.Endpoint,
 config :logger, level: :warn
 config :confage,
   storage_folder: "./priv/storage_test"
+
+config :confage, :auth,
+  username: "admin",
+  password: "admin",
+  realm: "Admin Area"

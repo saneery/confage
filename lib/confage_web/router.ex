@@ -2,6 +2,7 @@ defmodule ConfageWeb.Router do
   use ConfageWeb, :router
 
   pipeline :browser do
+    plug BasicAuth, use_config: {:confage, :auth}
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
@@ -11,6 +12,7 @@ defmodule ConfageWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug BasicAuth, use_config: {:confage, :auth}
   end
 
   scope "/api", ConfageWeb do
