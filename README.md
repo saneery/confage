@@ -21,7 +21,7 @@ get_config:test_app
 
 For subscribe:
 ```bash
-➜  confage git:(master) ✗ telnet localhost 6666
+~ telnet localhost 6666
 Trying 127.0.0.1...
 Connected to localhost.
 Escape character is '^]'.
