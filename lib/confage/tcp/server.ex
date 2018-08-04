@@ -3,9 +3,7 @@ defmodule Confage.TCP.Server do
 
   def start_link() do
     port = Application.get_env(:tcp_server, :port, 6666)
-    ip = Application.get_env(:tcp_server, :ip, {127, 0, 0, 1})
-    # GenServer.start_link(__MODULE__, [ip, port], [])
-    {:ok, _} = :ranch.start_listener(:tcp, 100, :ranch_tcp, [port: port, ip: ip], Confage.TCP.Handler, [])
+    {:ok, _} = :ranch.start_listener(:tcp, 100, :ranch_tcp, [port: port], Confage.TCP.Handler, [])
   end
 
   def init([ip, port]) do
