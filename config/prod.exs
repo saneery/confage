@@ -61,4 +61,9 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
+config :confage, :auth,
+  username: System.get_env("USERNAME") || "admin",
+  password: System.get_env("PASSWORD") || "admin",
+  realm: "Admin Area"
+
 import_config "prod.secret.exs"
