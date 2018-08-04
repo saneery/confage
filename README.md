@@ -5,7 +5,7 @@ Confage is a config storage for applications with web interface. Applications ca
 To run docker image:
 ```bash
 ~ docker build -t confage .
-~ docker run -p 4000:4000 -p 6666:6666 -e USERNAME=user -e PASSWORD=pass -v confage
+~ docker run -p 4000:4000 -p 6666:6666 -e USERNAME=user -e PASSWORD=pass -v /data:/priv/storage confage
 ```
 Application running inside container with ports 4000 for web and 6666 for tcp.
 
